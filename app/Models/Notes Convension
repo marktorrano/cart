@@ -1,0 +1,18 @@
+1. Table names are in lowercase and in plural.
+2. Each table need to have a field 'id' which is the primary key.
+3. Foreign key is named as 'field_id'
+4. Add 'created_at' 'updated_at' 'deleted_at'
+
+
+Model
+1. Model name is Capitalised and singular
+2. 
+
+Eloquent functions
+
+App\Models\Product::find(3)->field_name;
+
+find(i);
+hasMany();
+belongsTo();
+get();

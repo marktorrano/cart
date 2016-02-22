@@ -13,10 +13,19 @@
 
 Route::get('/', function () {
     
-    $product = App\Models\Product::find(3);
+//    $user = App\Models\User::find(1);    
+    $type = App\Models\Type::find(6);
+    $types = App\Models\Type::all();
+//    return $user->username;    
     
-    return $product->type->products;
-    //return view('welcome');
+    
+//    return App\Models\Order::find(1)->products;
+    
+//    return $type->products;
+    return view('product',['type'=>$type], ['types'=>$types]);
+    
+    
+    
 });
 
 /*

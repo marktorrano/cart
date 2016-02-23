@@ -3,15 +3,11 @@
 
            @section('content') 
            
-           <select>
-           @foreach($types as $type)
-               <option>{{$type->name}}</option>               
-           @endforeach
-           </select>
+
             <h2>{{$type->name}}</h2>
             @foreach($type->products as $product)
 			<article class="group">		
-				<img src="productphotos/{{$product->photo}}" alt="">
+				<img src="{{asset('productphotos/'.$product->photo)}}" alt="">
 				<h4>{{  $product->name }}</h4>
 				<p>{{ $product->description}}</p>
 				<span class="price"><i class="icon-dollar"></i> {{ $product->price}}</span>

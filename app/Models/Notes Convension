@@ -16,3 +16,11 @@ find(i);
 hasMany();
 belongsTo();
 get();
+
+
+REST
+
+Put - Create
+Get - Read
+Post - Update
+Delete - Delete

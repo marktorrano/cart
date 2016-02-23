@@ -14,7 +14,7 @@
 Route::get('/', function () {
     
 //    $user = App\Models\User::find(1);    
-    $type = App\Models\Type::find(6);
+    $type = App\Models\Type::find(2);
     $types = App\Models\Type::all();
 //    return $user->username;    
     
@@ -22,9 +22,43 @@ Route::get('/', function () {
 //    return App\Models\Order::find(1)->products;
     
 //    return $type->products;
-    return view('product',['type'=>$type], ['types'=>$types]);
+    return view('productlist',['type'=>$type], ['types'=>$types]);
     
     
+    
+});
+
+Route::get('login', function () {
+
+    
+    
+    return view('login');
+    
+});
+
+Route::get('users/create', function () {
+    
+    
+    
+    
+    return view('registerform');
+    
+});
+
+
+Route::get('types/{id}', function ($id) {
+
+    $type = App\Models\Type::find($id);
+    return view('productlist',['type'=>$type]);
+    
+});
+
+Route::get('users/{id}', function ($id) {
+
+    $user = App\Models\User::find($id);
+    
+    
+    return view('userdetails',['user'=>$user]);
     
 });
 

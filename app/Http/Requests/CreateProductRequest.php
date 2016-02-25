@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class CreateUserRequest extends Request
+class CreateProductRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,22 +23,18 @@ class CreateUserRequest extends Request
      */
     public function rules()
     {
-        return [
-            'username'=>'required|unique:users',
-            'email'=>'required',
-            'password'=>'required',
-            'firstname'=>'required',
-            'lastname'=>'required'
+        return [ 
+            
+            'name'=>'required',
+            'description'=>'requried',
+            
         ];
     }
     
     public function messages()
     {
         return [
-            'username.required'=>'Fill this out',
-            'username.unique'=>'Already taken'
-            
+            'name.required'=>'Fill this out'            
         ];
     }
-    
 }

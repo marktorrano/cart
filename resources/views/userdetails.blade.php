@@ -12,7 +12,7 @@
         <h2>List of Users</h2>
         @foreach(App\Models\User::all() as $user)
         
-        <a href="{{url('users/'.$user->id)}}">{{$user->firstname}}</a><br/>
+        <a href="{{url('users/'.$user->id.'/edit')}}">{{$user->firstname .' '. $user->lastname}}</a><br/>
         
         @endforeach
 		@stop

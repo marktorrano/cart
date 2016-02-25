@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
-//var elixir = require('laravel-elixir');
+var elixir = require('laravel-elixir');
 var sass = require('gulp-sass');
 
 /*
@@ -14,10 +14,10 @@ var sass = require('gulp-sass');
  | file for our application, as well as publishing vendor resources.
  |
  */
-//
-//elixir(function(mix) {
-//    mix.sass('app.scss');
-//});
+
+elixir(function(mix) {
+    mix.sass('app.scss');
+});
 
  
 gulp.task('sass:watch', function () {

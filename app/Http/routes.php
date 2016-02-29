@@ -39,47 +39,41 @@ Route::get('/', function () {
 |
 */
 
-    Route::group(['middleware' => ['web']], function () {
-
+Route::group(['middleware' => ['web']], function () {
 
     Route::get('login', function () {
 
-        return view('login');
+        return view('loginform');
 
+    });
+        
+    Route::get('logout', function(){
+
+        Auth::logout();
+        
+        return redirect('login');
+        
     });
 
     Route::get('users/create', function () {
 
         return view('registerform');
 
-    });
+    })->middleware(['auth']);
         
     Route::get('products/create', function () {   
 
         return view('createproductform');
 
-    });
+    })->middleware(['auth']);  
         
-
-    Route::post('users', function (App\Http\Requests\CreateUserRequest $req) {
-
-        $user = App\Models\User::create(Request::all());
-
-    });
-        
-    Route::post('products', function (App\Http\Requests\CreateProductRequest $req) {
-
-        $product = App\Models\Product::create(Request::all());
-        
-    });
-        
-
     Route::get('types/{id}', function ($id) {
 
         $type = App\Models\Type::find($id);
+        
         return view('productlist',['type'=>$type]);
 
-    });
+    })->middleware(['auth']);
 
     Route::get('users/{id}', function ($id) {
 
@@ -87,7 +81,7 @@ Route::get('/', function () {
 
         return view('userdetails',['user'=>$user]);
 
-    });
+    })->middleware(['auth', 'auth.user']);
         
     Route::get('products/{id}', function ($id) {
 
@@ -95,7 +89,7 @@ Route::get('/', function () {
 
         return view('productdetails',['product'=>$product]);
 
-    });
+    })->middleware(['auth']);
         
     Route::get('users/{id}/edit', function ($id) {
         
@@ -103,7 +97,7 @@ Route::get('/', function () {
         
         return view('edituserform', ['user'=>$user]);
 
-    });
+    })->middleware(['auth']);
         
     Route::get('products/{id}/edit', function ($id) {
         
@@ -111,7 +105,52 @@ Route::get('/', function () {
         
         return view('editproductform', ['product'=>$product]);
 
+    })->middleware(['auth']);
+        
+    Route::post('users', function (App\Http\Requests\CreateUserRequest $req) {
+
+        $user = App\Models\User::create(Request::all());
+        
+        $user->password = bcrypt($user->password);
+        
+        $user->save();
+        
+        return redirect('users/'.$user->id);
+
     });
+        
+    Route::post('login', function (App\Http\Requests\LoginRequest $req) {
+        
+        
+        $credential = $req->only('username', 'password');
+        
+        if(Auth::attempt($credential)){
+            
+            return redirect('types/1');  
+            
+        }else{
+            
+            return redirect('login')->with('message', 'Try again');
+            
+        }
+    
+    });
+        
+    Route::post('products', function (App\Http\Requests\CreateProductRequest $req) {
+
+        $product = App\Models\Product::create(Request::all());
+
+        $newName = "photo". $product->id . ".jpg";
+        
+        Request::file('photo')->move("productphotos", $newName);
+        
+        $product->photo = $newName;
+
+        $product->save();
+
+        return redirect('types/'. $product->type->id); 
+        
+    })->middleware(['auth']);
         
     Route::put('users/{id}', function(App\Http\Requests\EditUserRequest $req, $id){
                
@@ -123,22 +162,26 @@ Route::get('/', function () {
         
         return redirect('users/'. $id);
         
-    });
+    })->middleware(['auth']);
         
     Route::put('products/{id}', function(App\Http\Requests\EditProductRequest $req, $id){
                
         $product = App\Models\Product::find($id);
+                    
+        $product->fill(Request::all());  
         
-        $product->fill(Request::all());
+        $newName = "photo". $product->id . ".jpg";
+        
+        Request::file('photo')->move("productphotos", $newName);
+        
+        $product->photo = $newName;   
         
         $product->save();
         
         return redirect('products/'. $id);
         
-    });
+    })->middleware(['auth']);
         
-    Route::delete('users/{id}', function($id){
-               
-        
-    });
+    Route::delete('users/{id}', function($id){ })->middleware(['auth']);
+    
 });

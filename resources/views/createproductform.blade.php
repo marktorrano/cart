@@ -2,7 +2,7 @@
        @section('content')    
 
 			<h2>Create New Product</h2>
-			{!! Form::open(array('url' => 'products')) !!}
+			{!! Form::open(array('url' => 'products', 'files' => 'true', 'enctype' => "multipart/form-data")) !!}
 				<fielset>
              {!! Form::label('name', 'Name'); !!}
              {!! Form::text('name'); !!}
@@ -17,8 +17,11 @@
              {!! $errors->first('price', '<p class="error">:message</p>')!!}
              
              {!! Form::label('type_id', 'Type'); !!}
-             {!! Form::select('type_id', App\Models\Type::lists('name')); !!}
+             {!! Form::select('type_id', App\Models\Type::lists('name','id')); !!}
              {!! $errors->first('type_id', '<p class="error">:message</p>')!!}
+             
+             {!! Form::label('photo','Photo',array('id'=>'','class'=>'')) !!}
+             {!! Form::file('photo','',array('id'=>'','class'=>'')) !!}
               
              {!! Form::reset('Reset', ['class' => 'form-button']); !!}
              {!! Form::submit('Add Product');   !!}

@@ -4,10 +4,14 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    
+    "minimum-stability" : "dev",
+    
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "laravelcollective/html": "5.2.*"
+        "laravelcollective/html": "5.2.*",
+        "moltin/laravel-cart": "^5.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

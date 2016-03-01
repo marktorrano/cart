@@ -8,7 +8,7 @@
             @foreach($type->products as $product)
 			<article class="group">		
 				<img src="{{asset('productphotos/'.$product->photo)}}" alt="">
-				<h4>{{  $product->name }}</h4>
+				<h4><a href="{{url('products/'. $product->id)}}">{{  $product->name }}</a></h4>
 				<p>{{ $product->description}}</p>
 				<span class="price"><i class="icon-dollar"></i> {{ $product->price}}</span>
 				<span class="addtocart"><i class="icon-plus"></i></span>

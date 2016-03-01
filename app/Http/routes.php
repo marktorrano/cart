@@ -11,22 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    
-//    $user = App\Models\User::find(1);    
-    $type = App\Models\Type::find(2);
-    $types = App\Models\Type::all();
-//    return $user->username;    
-    
-    
-//    return App\Models\Order::find(1)->products;
-    
-//    return $type->products;
-    return view('productlist',['type'=>$type], ['types'=>$types]);
-    
-    
-    
-});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +25,11 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
+    Route::get('/', function () {
+
+    return dd(Cart::contents());
+ 
+    });
 
     Route::get('login', function () {
 
@@ -54,6 +44,12 @@ Route::group(['middleware' => ['web']], function () {
         return redirect('login');
         
     });
+    
+    Route::get('cart-items', function(){
+        
+        return view('showcart');
+        
+    })->middleware(['auth']);
 
     Route::get('users/create', function () {
 
@@ -105,8 +101,27 @@ Route::group(['middleware' => ['web']], function () {
         
         return view('editproductform', ['product'=>$product]);
 
-    })->middleware(['auth']);
+    })->middleware(['auth']);        
+    
+    Route::post('cart-items', function(){
         
+        $product = App\Models\Product::find(Request::input('product_id'));
+        
+        $items = array(
+            
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => $product->price,
+            'quantity' => Request::input('quantity')
+            
+        );        
+        
+        Cart::insert($items);
+
+        return redirect('cart-items');
+        
+    })->middleware(['auth']);
+    
     Route::post('users', function (App\Http\Requests\CreateUserRequest $req) {
 
         $user = App\Models\User::create(Request::all());
@@ -180,8 +195,16 @@ Route::group(['middleware' => ['web']], function () {
         
         return redirect('products/'. $id);
         
-    })->middleware(['auth']);
+    })->middleware(['auth']);        
+    
+    Route::delete('cart-items/{identifier}', function($identifier){
         
+        Cart::item($identifier)->remove();
+        
+        return redirect('cart-items');
+        
+    });
+    
     Route::delete('users/{id}', function($id){ })->middleware(['auth']);
     
 });

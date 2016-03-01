@@ -2,7 +2,7 @@
        @section('content')    
 
 			<h2>Create New Product</h2>
-			{!! Form::open(array('url' => 'products', 'files' => 'true', 'enctype' => "multipart/form-data")) !!}
+			 {!! Form::open(array('url' => 'products', 'files' => 'true', 'enctype' => "multipart/form-data")) !!}
 				<fielset>
              {!! Form::label('name', 'Name'); !!}
              {!! Form::text('name'); !!}

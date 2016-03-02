@@ -1,3 +1,10 @@
 .productphoto{
     width: 300px;   
 }
+ 
+.pagination ul{  
+}
+
+.pagination li a{
+    width: 1em;
+}

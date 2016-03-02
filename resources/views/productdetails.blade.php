@@ -15,7 +15,7 @@
            {{Form::open(array('url' => 'cart-items'))}}
            
            {{Form::label('quantity', 'Qty')}}
-           {{Form::text('quantity')}}
+           {{Form::text('quantity', 1)}}
            
            {{Form::hidden('product_id', $product->id)}}
            

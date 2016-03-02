@@ -14,7 +14,7 @@
 					<span>$ {{$item->price * $item->quantity}}</span>		
                     <span>
                         {{Form::open(array('url' => 'cart-items/'.$item->identifier, 'method' => 'delete'))}}
-                        {{Form::submit('delete')}}
+                        {{Form::submit('Delete')}}
                         {{Form::close()}}
                     </span>
 				</div>
@@ -25,8 +25,8 @@
 				</div>
 			</div>
 
-			<form method="POST" action="">
-				<input type="submit" value="Checkout">
-			</form>
+			{{Form::open(['url' => 'orders/checkout'])}}
+			{{Form::submit('Checkout')}}
+			{{Form::close()}}
 			
 		@stop

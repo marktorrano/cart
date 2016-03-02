@@ -50,7 +50,17 @@ Route::group(['middleware' => ['web']], function () {
         return view('showcart');
         
     })->middleware(['auth']);
+    
+	Route::get('orders', function () {
 
+		$orders = Auth::user()->orders;
+        
+//        dd($orders);
+
+		return view("orderlist",['orders'=>$orders]);
+
+	})->middleware(['auth']);
+    
     Route::get('users/create', function () {
 
         return view('registerform');
@@ -101,7 +111,8 @@ Route::group(['middleware' => ['web']], function () {
         
         return view('editproductform', ['product'=>$product]);
 
-    })->middleware(['auth']);        
+    })->middleware(['auth']); 
+    
     
     Route::post('cart-items', function(){
         
@@ -166,6 +177,27 @@ Route::group(['middleware' => ['web']], function () {
         return redirect('types/'. $product->type->id); 
         
     })->middleware(['auth']);
+    
+    Route::post('orders/checkout', function(){
+        
+        $order = new \App\Models\Order();
+        
+        $order->user_id = Auth::user()->id;
+        $order->status = "Pending";
+        $order->save();
+        
+        foreach(Cart::contents() as $item){
+            
+            $order->products()->attach($item->id, ['quantity'=>$item->quantity]);
+                
+        }
+        
+        Cart::destroy();
+        
+        return redirect('types/1');
+        
+    })->middleware(['auth']);
+    
         
     Route::put('users/{id}', function(App\Http\Requests\EditUserRequest $req, $id){
                
@@ -195,7 +227,8 @@ Route::group(['middleware' => ['web']], function () {
         
         return redirect('products/'. $id);
         
-    })->middleware(['auth']);        
+    })->middleware(['auth']);  
+    
     
     Route::delete('cart-items/{identifier}', function($identifier){
         

@@ -31,19 +31,13 @@ Route::group(['middleware' => ['web']], function () {
  
     });
 
-    Route::get('login', function () {
+    Route::get('login', "LoginController@showLoginForm");        
+    Route::get('logout', "LoginController@logout");    
+    Route::post('login', "LoginController@processLogin");    
+    
 
-        return view('loginform');
-
-    });
-        
-    Route::get('logout', function(){
-
-        Auth::logout();
-        
-        return redirect('login');
-        
-    });
+    Route::resource('products', 'ProductController');
+    
     
     Route::get('cart-items', function(){
         
@@ -67,12 +61,6 @@ Route::group(['middleware' => ['web']], function () {
 
     })->middleware(['auth']);
         
-    Route::get('products/create', function () {   
-
-        return view('createproductform');
-
-    })->middleware(['auth']);  
-        
     Route::get('types/{id}', function ($id) {
 
         $type = App\Models\Type::find($id);
@@ -89,14 +77,6 @@ Route::group(['middleware' => ['web']], function () {
 
     })->middleware(['auth', 'auth.user']);
         
-    Route::get('products/{id}', function ($id) {
-
-        $product = App\Models\Product::find($id);
-
-        return view('productdetails',['product'=>$product]);
-
-    })->middleware(['auth']);
-        
     Route::get('users/{id}/edit', function ($id) {
         
         $user = App\Models\User::find($id);
@@ -104,16 +84,7 @@ Route::group(['middleware' => ['web']], function () {
         return view('edituserform', ['user'=>$user]);
 
     })->middleware(['auth']);
-        
-    Route::get('products/{id}/edit', function ($id) {
-        
-        $product = App\Models\Product::find($id);
-        
-        return view('editproductform', ['product'=>$product]);
-
-    })->middleware(['auth']); 
-    
-    
+            
     Route::post('cart-items', function(){
         
         $product = App\Models\Product::find(Request::input('product_id'));
@@ -145,38 +116,6 @@ Route::group(['middleware' => ['web']], function () {
 
     });
         
-    Route::post('login', function (App\Http\Requests\LoginRequest $req) {
-        
-        
-        $credential = $req->only('username', 'password');
-        
-        if(Auth::attempt($credential)){
-            
-            return redirect('types/1');  
-            
-        }else{
-            
-            return redirect('login')->with('message', 'Try again');
-            
-        }
-    
-    });
-        
-    Route::post('products', function (App\Http\Requests\CreateProductRequest $req) {
-
-        $product = App\Models\Product::create(Request::all());
-
-        $newName = "photo". $product->id . ".jpg";
-        
-        Request::file('photo')->move("productphotos", $newName);
-        
-        $product->photo = $newName;
-
-        $product->save();
-
-        return redirect('types/'. $product->type->id); 
-        
-    })->middleware(['auth']);
     
     Route::post('orders/checkout', function(){
         
@@ -211,25 +150,6 @@ Route::group(['middleware' => ['web']], function () {
         
     })->middleware(['auth']);
         
-    Route::put('products/{id}', function(App\Http\Requests\EditProductRequest $req, $id){
-               
-        $product = App\Models\Product::find($id);
-                    
-        $product->fill(Request::all());  
-        
-        $newName = "photo". $product->id . ".jpg";
-        
-        Request::file('photo')->move("productphotos", $newName);
-        
-        $product->photo = $newName;   
-        
-        $product->save();
-        
-        return redirect('products/'. $id);
-        
-    })->middleware(['auth']);  
-    
-    
     Route::delete('cart-items/{identifier}', function($identifier){
         
         Cart::item($identifier)->remove();

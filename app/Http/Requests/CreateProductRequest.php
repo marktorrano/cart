@@ -25,8 +25,10 @@ class CreateProductRequest extends Request
     {
         return [ 
             
-            'name'=>'required',
+            'name'=>'required|unique:products,name,'.$this->route('products'),
             'description'=>'requried',
+            'price'=>'required',
+            'type'=>'required'
             
         ];
     }
@@ -34,7 +36,11 @@ class CreateProductRequest extends Request
     public function messages()
     {
         return [
-            'name.required'=>'Fill this out'            
+            'name.required'=>'Fill this out',
+            'description.required'=>'Fill this out',
+            'price.required'=>'Fill this out',
+            'type.required'=>'Fill this out'
+            
         ];
     }
 }

@@ -25,7 +25,7 @@ class EditProductRequest extends Request
     {
         return [
             
-            'name'=>'required|unique:products,name,' .$this->route('id'),
+            'name'=>'required|unique:products,name,'.$this->route('products'),
             'description'=>'required'
             //
         ];

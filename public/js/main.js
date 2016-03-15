@@ -66,6 +66,7 @@ $(function(){
 			type: "textarea",
 			cssclass: "editable",
 			onblur: 'submit',
+			submit: 'Ok',
 			submitdata: {
 				_method: "PUT",
 				_token: $('#token').text(),
@@ -80,8 +81,6 @@ $(function(){
 	});
 
 	$(document).on('DOMNodeInserted', function(e){
-
-		console.log(e);
 
 		if($(e.target).hasClass('editable')){
 

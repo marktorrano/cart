@@ -1,3 +1,4 @@
+@if(!Request::ajax())
 <!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
@@ -11,11 +12,12 @@
 	<title>Your Page Title Here :)</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
-
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+	
 	<!-- Mobile Specific Metas
   ================================================== -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
+	
 	<!-- CSS
   ================================================== -->
   	<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
@@ -53,7 +55,7 @@
 				<ul class="group">
 				
 				@foreach(App\Models\Type::all() as $type)
-					<li><a href="{{url('types/'.$type->id)}}">{{$type->name}}</a></li>					
+					<li><a class="nav-type" href="{{url('types/'.$type->id)}}">{{$type->name}}</a></li>					
 				@endforeach
 				@if(Auth::check())
 				    <li class="clear"><a href="{{url('users/'.Auth::user()->id)}}">Account <i class="icon-user"></i></a></li>
@@ -72,19 +74,23 @@
 			</nav>
 		</header>
 		<div class="main group">
-		
+		@endif
 			@yield('content')
-			
+		@if(!Request::ajax())
 		</div>
 		<footer></footer>
 
 	</div><!-- container -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{asset('js/main.js')}}"></script>
-
+    
+    <script src="{{asset('js/spin.min.js')}}"></script>
+    <script src="{{asset('js/jquery.history.js')}}"></script>
+    <script src="{{asset('js/jeditable.min.js')}}"></script>
+	<script src="{{asset('js/main.js')}}"></script>
 
 
 <!-- End Document
 ================================================== -->
 </body>
 </html>
+@endif

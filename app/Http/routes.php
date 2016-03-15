@@ -75,7 +75,7 @@ Route::group(['middleware' => ['web']], function () {
 
         return view('userdetails',['user'=>$user]);
 
-    })->middleware(['auth', 'auth.user']);
+    });
         
     Route::get('users/{id}/edit', function ($id) {
         
@@ -104,17 +104,7 @@ Route::group(['middleware' => ['web']], function () {
         
     })->middleware(['auth']);
     
-    Route::post('users', function (App\Http\Requests\CreateUserRequest $req) {
-
-        $user = App\Models\User::create(Request::all());
-        
-        $user->password = bcrypt($user->password);
-        
-        $user->save();
-        
-        return redirect('users/'.$user->id);
-
-    });
+    
         
     
     Route::post('orders/checkout', function(){
@@ -136,19 +126,57 @@ Route::group(['middleware' => ['web']], function () {
         return redirect('types/1');
         
     })->middleware(['auth']);
+
+
+    
     
         
-    Route::put('users/{id}', function(App\Http\Requests\EditUserRequest $req, $id){
-               
-        $user = App\Models\User::find($id);
+    Route::post('users', function (App\Http\Requests\CreateUserRequest $req) {
+
+        $user = App\Models\User::create(Request::all());
         
-        $user->fill(Request::all());
+        $user->password = bcrypt($user->password);
         
         $user->save();
         
-        return redirect('users/'. $id);
+        return redirect('users/'.$user->id);
+
+    });
+
+    Route::put('users/{id}', function( $id){
+               
+        $user = App\Models\User::find($id);
+
+        if(!Request::ajax()){
+
+            $user->fill(Request::all());
+
+            $user->save();
+
+            return redirect('users/'. $id);
+
+        }else{
+
+            $column = Request::input('column');
+
+            $value = Request::input('value');
+
+            $user->$column = $value;
+
+            $user->save();
+
+            return $value;
+
+        }
+
         
-    })->middleware(['auth']);
+    });
+
+
+
+
+
+
         
     Route::delete('cart-items/{identifier}', function($identifier){
         

@@ -3,16 +3,16 @@
 
         <h2>Register New Account</h2>
 			<h3>First Name: </h3>
-			<p>{{$user->firstname}}</p>
+			<p data-editable="firstname" data-url="{{url('users/'. $user->id)}}">{{$user->firstname}}</p>
 			<h3>Last Name: </h3>
-			<p>{{$user->lastname}}</p>
+			<p data-editable="lastname" data-url="{{url('users/'. $user->id)}}">{{$user->lastname}}</p>
 			<h3>Email: </h3>
-			<p>{{$user->email}}</p>		
-			
+			<p data-editable="email" data-url="{{url('users/'. $user->id)}}">{{$user->email}}</p>		
+			<div id="text">{{ csrf_token() }}</div>
         <h2>List of Users</h2>
         @foreach(App\Models\User::all() as $user)
         
         <a href="{{url('users/'.$user->id.'/edit')}}">{{$user->firstname .' '. $user->lastname}}</a><br/>
         
         @endforeach
-		@stop
+	   @stop

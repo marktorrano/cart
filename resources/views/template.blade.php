@@ -82,10 +82,10 @@
 
 	</div><!-- container -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    
     <script src="{{asset('js/spin.min.js')}}"></script>
     <script src="{{asset('js/jquery.history.js')}}"></script>
     <script src="{{asset('js/jeditable.min.js')}}"></script>
+	<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 	<script src="{{asset('js/main.js')}}"></script>
 
 

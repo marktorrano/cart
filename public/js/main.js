@@ -54,13 +54,18 @@ $(function(){
 
 	});
 
+	//tinymce.init({
+	//	selector: '#bla'
+	//});
+
 
 	$('[data-editable]').each(function(i,el){
 
 		var url = $(el).data('url');
 		var options = {
 			type: "textarea",
-			submit: "OK",
+			cssclass: "editable",
+			onblur: 'submit',
 			submitdata: {
 				_method: "PUT",
 				_token: $('#token').text(),
@@ -74,7 +79,17 @@ $(function(){
 
 	});
 
-	
+	$(document).on('DOMNodeInserted', function(e){
+
+		console.log(e);
+
+		if($(e.target).hasClass('editable')){
+
+			tinymce.init({selector: '.editable textarea'});
+
+		}
+
+	});
 });
 
 

@@ -7,8 +7,9 @@
 			<h3>Last Name: </h3>
 			<p data-editable="lastname" data-url="{{url('users/'. $user->id)}}">{{$user->lastname}}</p>
 			<h3>Email: </h3>
-			<p data-editable="email" data-url="{{url('users/'. $user->id)}}">{{$user->email}}</p>		
-			<div id="text">{{ csrf_token() }}</div>
+			<p data-editable="email" data-url="{{url('users/'. $user->id)}}">{{$user->email}}</p>
+			{{--<textarea name="bla" id="bla"></textarea>--}}
+			<div id="text" style="opacity:0">{{ csrf_token() }}</div>
         <h2>List of Users</h2>
         @foreach(App\Models\User::all() as $user)
         
